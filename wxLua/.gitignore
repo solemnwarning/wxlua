@@ -1,0 +1,15 @@
+*.o
+
+/bin/wxlua
+/bin/wxluacan
+/bin/wxluafreeze
+
+/modules/lua-5.1/install/
+/modules/lua-5.1/src/liblua.a
+/modules/lua-5.1/src/lua
+/modules/lua-5.1/src/luac
+
+/modules/lua-5.2/install/
+/modules/lua-5.2/src/liblua.a
+/modules/lua-5.2/src/lua
+/modules/lua-5.2/src/luac

@@ -15,8 +15,8 @@
      #include "wx/wx.h"
 #endif
 
-#include "wxlua/wxlstate.h"
-#include "wxlua/debugger/wxluadebugger_bind.h"
+#include <wxlua/wxlstate.h>
+#include "wxluadebugger_bind.h"
 
 #ifdef __GNUC__
     #pragma GCC diagnostic ignored "-Wunused-variable"

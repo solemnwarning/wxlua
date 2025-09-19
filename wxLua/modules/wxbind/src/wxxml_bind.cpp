@@ -15,8 +15,8 @@
      #include "wx/wx.h"
 #endif
 
-#include "wxlua/wxlstate.h"
-#include "wxbind/include/wxxml_bind.h"
+#include <wxlua/wxlstate.h>
+#include "../../../include/wxbind/wxxml_bind.h"
 
 #ifdef __GNUC__
     #pragma GCC diagnostic ignored "-Wunused-variable"

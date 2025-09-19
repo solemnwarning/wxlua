@@ -9,11 +9,11 @@
 #define __HOOK_WXLUA_wxluadebugger_H__
 
 #include "wx/defs.h"
-#include "wxlua/debugger/wxluadebuggerdefs.h"
-#include "wxbind/include/wxcore_bind.h"
+#include "wxluadebuggerdefs.h"
+#include <wxbind/wxcore_bind.h>
 
-#include "wxlua/wxlstate.h"
-#include "wxlua/wxlbind.h"
+#include <wxlua/wxlstate.h>
+#include <wxlua/wxlbind.h>
 
 // ---------------------------------------------------------------------------
 // Check if the version of binding generator used to create this is older than
@@ -45,7 +45,7 @@ extern WXDLLIMPEXP_WXLUADEBUGGER wxLuaBinding* wxLuaBinding_wxluadebugger_init()
 
 #include "wx/defs.h"
 #include "wx/object.h"
-#include "wxlua/debugger/wxldserv.h"
+#include "wxldserv.h"
 #include "wxlua/wxlbind.h"
 #include "wxlua/wxlstate.h"
 

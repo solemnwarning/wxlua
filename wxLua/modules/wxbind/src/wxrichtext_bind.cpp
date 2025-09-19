@@ -15,8 +15,8 @@
      #include "wx/wx.h"
 #endif
 
-#include "wxlua/wxlstate.h"
-#include "wxbind/include/wxrichtext_bind.h"
+#include <wxlua/wxlstate.h>
+#include "../../../include/wxbind/wxrichtext_bind.h"
 #if wxLUA_USE_wxRichText && wxCHECK_VERSION(3,0,0) && wxUSE_RICHTEXT
   static wxRichTextRange wxRICHTEXT_ALL_S = wxRICHTEXT_ALL;
   static wxRichTextRange wxRICHTEXT_NONE_S = wxRICHTEXT_NONE;
