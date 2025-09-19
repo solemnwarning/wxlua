@@ -15,7 +15,7 @@
      #include "wx/wx.h"
 #endif
 
-#include "wxlua/wxlstate.h"
+#include <wxlua/wxlstate.h>
 #include "wxluacan_bind.h"
 
 #ifdef __GNUC__

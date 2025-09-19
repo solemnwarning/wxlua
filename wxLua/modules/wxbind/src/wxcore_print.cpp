@@ -15,8 +15,8 @@
      #include "wx/wx.h"
 #endif
 
-#include "wxlua/wxlstate.h"
-#include "wxbind/include/wxcore_bind.h"
+#include <wxlua/wxlstate.h>
+#include "../../../include/wxbind/wxcore_bind.h"
 #ifdef Above
     #undef Above
 #endif

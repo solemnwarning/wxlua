@@ -8,10 +8,10 @@
 #ifndef __HOOK_WXLUA_wxluacan_H__
 #define __HOOK_WXLUA_wxluacan_H__
 
-#include "wxbind/include/wxcore_bind.h"
+#include <wxbind/wxcore_bind.h>
 
-#include "wxlua/wxlstate.h"
-#include "wxlua/wxlbind.h"
+#include <wxlua/wxlstate.h>
+#include <wxlua/wxlbind.h>
 
 // ---------------------------------------------------------------------------
 // Check if the version of binding generator used to create this is older than
