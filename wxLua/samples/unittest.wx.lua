@@ -396,3 +396,8 @@ print("Warnings          : "..tostring(warnings).."\n")
 -- Does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit since the
 -- MainLoop is already running or will be started by the C++ program.
 --wx.wxGetApp():MainLoop()
+
+if failed_tests > 0
+then
+    os.exit(1)
+end
