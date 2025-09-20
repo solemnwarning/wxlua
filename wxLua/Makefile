@@ -139,7 +139,13 @@ WXLUAEDIT_OBJS := \
 	apps/wxluaedit/wxledit.o \
 	apps/wxluaedit/wxluaedit.o
 
-LUAMODULE := lib/lua/wx.so
+ifeq ($(OS),Windows_NT)
+	LUAMODULE := lib/lua/wx.dll
+	WX_LIBS += -lws2_32
+else
+	LUAMODULE := lib/lua/wx.so
+endif
+
 LUAMODULE_OBJS := \
 	modules/luamodule/luamodule.o
 
