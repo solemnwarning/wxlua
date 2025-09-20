@@ -38,7 +38,10 @@
 extern "C"
 {
     // force C linkage w/o name mangling
-    WXDLLIMPEXP_LUAMODULE int luaopen_wx(lua_State *L);
+#ifdef __WXMSW__
+    __declspec(dllexport)
+#endif
+    int luaopen_wx(lua_State *L);
 
 #ifdef __WXMSW__
     BOOL APIENTRY DllMain( HANDLE hModule, DWORD ul_reason_for_call, LPVOID );
