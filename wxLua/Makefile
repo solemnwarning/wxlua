@@ -262,11 +262,6 @@ $(WXBASE_BINDING_TARGETS): $(WXBASE_BINDING_FLAG_FILE)
 
 $(WXBASE_BINDING_FLAG_FILE): $(WXBASE_BINDING_DEPENDENCIES) $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxwidgets/wxbase_rules.lua\"" genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXBASE_BINDING_TARGETS)
-	
 	touch $@
 
 # The wxcore bindings produce multiple source files from a single command, this
@@ -333,11 +328,6 @@ $(WXCORE_BINDING_TARGETS): $(WXCORE_BINDING_FLAG_FILE)
 
 $(WXCORE_BINDING_FLAG_FILE): $(WXCORE_BINDING_DEPDENDENCIES) $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxwidgets/wxcore_rules.lua\"" genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXCORE_BINDING_TARGETS)
-	
 	touch $@
 
 # The "basic" wxWidgets bindings all follow the same pattern and have a
@@ -359,19 +349,10 @@ WXLUA_ENABLE_BINDINGS ?= \
 
 $(WXLUA_ROOT)include/wxbind/%_bind.h $(WXLUA_ROOT)bindings/wxwidgets/%_datatypes.lua $(WXLUA_ROOT)modules/wxbind/src/%_bind.cpp: $(WXLUA_ROOT)bindings/wxwidgets/%_rules.lua $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxwidgets/$*_rules.lua\"" genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXLUA_ROOT)include/wxbind/$*_bind.h \
-		$(WXLUA_ROOT)bindings/wxwidgets/$*_datatypes.lua \
-		$(WXLUA_ROOT)modules/wxbind/src/$*_bind.cpp
 
 # Merged data types from wxWidgets library bindings for use by other bindings
 $(WXLUA_ROOT)bindings/wxwidgets/wx_datatypes.lua: $(WXLUA_ROOT)bindings/wxwidgets/wxbase_datatypes.lua $(foreach x,$(WXLUA_ENABLE_BINDINGS),$(WXLUA_ROOT)bindings/wxwidgets/$(x)_datatypes.lua) $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxwidgets/wxdatatypes_rules.lua\"" genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
 	touch $@
 
 # Individual library/application bindings.
@@ -380,21 +361,9 @@ $(WXLUA_ROOT)bindings/wxwidgets/wx_datatypes.lua: $(WXLUA_ROOT)bindings/wxwidget
 
 $(WXLUA_ROOT)include/wxlua/%_bind.h $(WXLUA_ROOT)bindings/wxlua/%_datatypes.lua $(WXLUA_ROOT)modules/wxlua/%_bind.cpp: $(WXLUA_ROOT)bindings/wxlua/wxlua_rules.lua $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxlua/$*_rules.lua\"" genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXLUA_ROOT)include/wxlua/$*_bind.h \
-		$(WXLUA_ROOT)bindings/wxlua/$*_datatypes.lua \
-		$(WXLUA_ROOT)modules/wxlua/$*_bind.cpp
 
 $(WXLUA_ROOT)modules/wxlua/debugger/%_bind.h $(WXLUA_ROOT)bindings/wxlua_debugger/%_datatypes.lua $(WXLUA_ROOT)modules/wxlua/debugger/%_bind.cpp: $(WXLUA_ROOT)bindings/wxlua_debugger/%_rules.lua $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxlua_debugger/$*_rules.lua\"" genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXLUA_ROOT)modules/wxlua/debugger/$*_bind.h \
-		$(WXLUA_ROOT)bindings/wxlua_debugger/$*_datatypes.lua \
-		$(WXLUA_ROOT)modules/wxlua/debugger/$*_bind.cpp
 
 # Bindings which must be built before anything in wxLua is compiled
 WXLUA_BIND_HEADERS = \
