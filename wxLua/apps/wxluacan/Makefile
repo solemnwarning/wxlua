@@ -82,11 +82,6 @@ endif
 
 $(WXLUACAN_BINDING_FLAG_FILE): $(WXLUACAN_BINDING_INPUTS)
 	$(LUA) -e"rulesFilename=\"wxluacan_rules.lua\"" ../../bindings/genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXLUACAN_BINDING_OUTPUTS)
-	
 	touch $@
 
 $(WXLUACAN_BINDING_OUTPUTS): $(WXLUACAN_BINDING_FLAG_FILE)

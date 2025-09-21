@@ -1701,7 +1701,7 @@ function WriteWrapperFiles(interfaceList)
         if output_single_cpp_binding_file then
             monolithicFileData[#monolithicFileData+1] = "\n\n"
         else
-            local written = WriteTableToFile(interface.CPPFileName, fileData, false)
+            local written = WriteTableToFile(interface.CPPFileName, fileData, true)
             if written then
                 updated_files = updated_files + 1
             end
@@ -1709,7 +1709,7 @@ function WriteWrapperFiles(interfaceList)
     end
 
     local fileData = GenerateHookHeaderFileTable()
-    local written = WriteTableToFile(GetCPPHeaderFileName(hook_cpp_header_filename), fileData, false)
+    local written = WriteTableToFile(GetCPPHeaderFileName(hook_cpp_header_filename), fileData, true)
     if written then
         updated_files = updated_files + 1
     end
@@ -1726,7 +1726,7 @@ function WriteWrapperFiles(interfaceList)
     fileData = GenerateHookObjectFileTable(fileData)
     fileData = GenerateHookCFunctionFileTable(fileData)
     fileData = GenerateHookClassFileTable(fileData)
-    written = WriteTableToFile(GetCPPFileName(hook_cpp_binding_filename), fileData, false)
+    written = WriteTableToFile(GetCPPFileName(hook_cpp_binding_filename), fileData, true)
     if written then
         updated_files = updated_files + 1
     end
@@ -5610,7 +5610,7 @@ function SerializeDataTypes(filename)
     table.insert(fileData, "        preprocConditionTable[k] = v\n")
     table.insert(fileData, "    end\n")
 
-    WriteTableToFile(filename, fileData, false)
+    WriteTableToFile(filename, fileData, true)
 end
 
 -- http://www2.dcs.elf.stuba.sk/TeamProject/2003/team05/produkt/player/utils/serialize/serialize.lua
