@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-# Purpose:     wxLua Makefile
+# Purpose:     wxLua library Makefile
 # Author:      Daniel Collins
 # Created:     19/09/2025
 # Copyright:   (c) 2025 Daniel Collins
@@ -9,7 +9,8 @@
 # Define this variable when this Makefile is included as part of another to
 # prefix all the paths for building parts of wxLua within another project.
 #
-# NOTE: The trailing slash is REQUIRED!
+# NOTE: The trailing slash is REQUIRED! Also, the path should not contain any
+# spaces (keep it relative to your project) or things will break.
 #
 # WXLUA_ROOT := foo/
 
@@ -28,6 +29,26 @@ pkg-select = $\
 	$(if $(found_pkg),$(found_pkg),$(error Could not found any of the following packages using pkg-config: $(1)))
 
 WXLUA_ROOT_ABS := $(if $(WXLUA_ROOT),$(call shell-or-die,cd "$(WXLUA_ROOT)" && pwd),$(call shell-or-die,pwd))
+
+WXLUA_ALL_BINDINGS := \
+	wxadv \
+	wxaui \
+	wxgl \
+	wxhtml \
+	wxmedia \
+	wxnet \
+	wxpropgrid \
+	wxrichtext \
+	wxstc \
+	wxwebview \
+	wxxml \
+	wxxrc
+
+WXLUA_ENABLE_BINDINGS ?= $(WXLUA_ALL_BINDINGS)
+
+ifneq ($(filter-out $(WXLUA_ALL_BINDINGS),$(WXLUA_ENABLE_BINDINGS)),)
+_ := $(error Unknown binding(s) specified in WXLUA_ENABLE_BINDINGS: $(filter-out $(WXLUA_ALL_BINDINGS),$(WXLUA_ENABLE_BINDINGS)))
+endif
 
 WX_CONFIG ?= wx-config
 WX_USE_LIBS ?= propgrid webview gl xrc xml net media richtext aui stc html adv core base
@@ -86,16 +107,16 @@ WXLUA_DEBUGGER_OBJS := \
 WXBIND_DIR := $(WXLUA_ROOT)modules/wxbind
 
 WXBIND_LIB := $(WXLUA_ROOT)lib/wxbind.a
-WXBIND_OBJS := \
-	$(WXBIND_DIR)/src/wxadv_bind.o \
-	$(WXBIND_DIR)/src/wxadv_wxladv.o \
-	$(WXBIND_DIR)/src/wxaui_bind.o \
+
+WXBIND_BASE_OBJS := \
 	$(WXBIND_DIR)/src/wxbase_base.o \
 	$(WXBIND_DIR)/src/wxbase_bind.o \
 	$(WXBIND_DIR)/src/wxbase_config.o \
 	$(WXBIND_DIR)/src/wxbase_data.o \
 	$(WXBIND_DIR)/src/wxbase_datetime.o \
-	$(WXBIND_DIR)/src/wxbase_file.o \
+	$(WXBIND_DIR)/src/wxbase_file.o
+
+WXBIND_CORE_OBJS := \
 	$(WXBIND_DIR)/src/wxcore_appframe.o \
 	$(WXBIND_DIR)/src/wxcore_bind.o \
 	$(WXBIND_DIR)/src/wxcore_clipdrag.o \
@@ -115,38 +136,21 @@ WXBIND_OBJS := \
 	$(WXBIND_DIR)/src/wxcore_print.o \
 	$(WXBIND_DIR)/src/wxcore_sizer.o \
 	$(WXBIND_DIR)/src/wxcore_windows.o \
-	$(WXBIND_DIR)/src/wxcore_wxlcore.o \
-	$(WXBIND_DIR)/src/wxgl_bind.o \
-	$(WXBIND_DIR)/src/wxhtml_bind.o \
-	$(WXBIND_DIR)/src/wxhtml_wxlhtml.o \
-	$(WXBIND_DIR)/src/wxmedia_bind.o \
-	$(WXBIND_DIR)/src/wxnet_bind.o \
-	$(WXBIND_DIR)/src/wxpropgrid_bind.o \
-	$(WXBIND_DIR)/src/wxrichtext_bind.o \
-	$(WXBIND_DIR)/src/wxstc_bind.o \
-	$(WXBIND_DIR)/src/wxwebview_bind.o \
-	$(WXBIND_DIR)/src/wxxml_bind.o \
-	$(WXBIND_DIR)/src/wxxrc_bind.o
+	$(WXBIND_DIR)/src/wxcore_wxlcore.o
 
-WXLUA_APP := $(WXLUA_ROOT)bin/wxlua
-WXLUA_APP_OBJS := \
-	$(WXLUA_ROOT)apps/wxlua/wxlua.o
+WXBIND_OBJS := \
+	$(WXBIND_BASE_OBJS) \
+	$(WXBIND_CORE_OBJS) \
+	$(foreach x,$(WXLUA_ENABLE_BINDINGS),$(WXBIND_DIR)/src/$(x)_bind.o) \
+	$(if $(filter wxadv,$(WXLUA_ENABLE_BINDINGS)),$(WXBIND_DIR)/src/wxadv_wxladv.o) \
+	$(if $(filter wxhtml,$(WXLUA_ENABLE_BINDINGS)),$(WXBIND_DIR)/src/wxhtml_wxlhtml.o)
 
-WXLUACAN_APP := $(WXLUA_ROOT)bin/wxluacan
-WXLUACAN_APP_OBJS := \
-	$(WXLUA_ROOT)apps/wxluacan/cancom.o \
-	$(WXLUA_ROOT)apps/wxluacan/canlua.o \
-	$(WXLUA_ROOT)apps/wxluacan/cansim.o \
-	$(WXLUA_ROOT)apps/wxluacan/wxluacan_bind.o
-
-WXLUAFREEZE_APP := $(WXLUA_ROOT)bin/wxluafreeze
-WXLUAFREEZE_OBJS := \
-	$(WXLUA_ROOT)apps/wxluafreeze/wxluafreeze.o
-
-WXLUAEDIT_APP := $(WXLUA_ROOT)bin/wxluaedit
-WXLUAEDIT_OBJS := \
-	$(WXLUA_ROOT)apps/wxluaedit/wxledit.o \
-	$(WXLUA_ROOT)apps/wxluaedit/wxluaedit.o
+WXBIND_ALL_OBJS := \
+	$(WXBIND_BASE_OBJS) \
+	$(WXBIND_CORE_OBJS) \
+	$(foreach x,$(WXLUA_ALL_BINDINGS),$(WXBIND_DIR)/src/$(x)_bind.o) \
+	$(WXBIND_DIR)/src/wxadv_wxladv.o \
+	$(WXBIND_DIR)/src/wxadv_wxlhtml.o
 
 ifeq ($(OS),Windows_NT)
 	LUAMODULE := $(WXLUA_ROOT)lib/lua/wx.dll
@@ -158,17 +162,8 @@ endif
 LUAMODULE_OBJS := \
 	$(WXLUA_ROOT)modules/luamodule/luamodule.o
 
-# Bindings which must be built before anything in wxLua is compiled
-BINDING_PREREQS := \
-	$(WXBASE_BINDING_TARGETS) \
-	$(WXCORE_BINDING_TARGETS) \
-	$(foreach x,$(WXBIND_BASIC_BINDINGS),$(WXLUA_ROOT)include/wxbind/$(x)_bind.h) \
-	$(WXLUA_ROOT)include/wxlua/wxlua_bind.h \
-	$(WXLUA_ROOT)modules/wxlua/debugger/wxluadebugger_bind.h \
-	$(WXLUA_ROOT)apps/wxluacan/wxluacan_bind.h
-
 .PHONY: wxlua-all
-wxlua-all: $(WXLUA_LIB) $(WXLUA_DEBUG_LIB) $(WXLUA_DEBUGGER_LIB) $(WXBIND_LIB) $(WXLUA_APP) $(WXLUACAN_APP) $(WXLUAFREEZE_APP) $(LUAMODULE)
+wxlua-all: $(WXLUA_LIB) $(WXLUA_DEBUG_LIB) $(WXLUA_DEBUGGER_LIB) $(WXBIND_LIB) $(LUAMODULE)
 
 ifeq ($(WXLUA_ROOT),)
 .PHONY: clean
@@ -177,44 +172,27 @@ endif
 
 .PHONY: wxlua-clean
 wxlua-clean:
-	rm -f $(WXLUA_APP) $(WXLUA_APP_OBJS)
-	rm -f $(WXLUACAN_APP) $(WXLUACAN_APP_OBJS)
-	rm -f $(WXLUAFREEZE_APP) $(WXLUAFREEZE_OBJS)
-	rm -f $(WXLUAEDIT_APP) $(WXLUAEDIT_OBJS)
 	rm -f $(WXLUA_LIB) $(WXLUA_OBJS)
 	rm -f $(WXLUA_DEBUG_LIB) $(WXLUA_DEBUG_OBJS)
 	rm -f $(WXLUA_DEBUGGER_LIB) $(WXLUA_DEBUGGER_OBJS)
-	rm -f $(WXBIND_LIB) $(WXBIND_OBJS)
+	rm -f $(WXBIND_LIB) $(WXBIND_ALL_OBJS)
 	rm -f $(LUAMODULE) $(LUAMODULE_OBJS)
 	
 	rm -f $(WXBASE_BINDING_TARGETS) $(WXBASE_BINDING_FLAG_FILE)
 	rm -f $(WXCORE_BINDING_TARGETS) $(WXCORE_BINDING_FLAG_FILE)
-	rm -f $(foreach x,$(WXBIND_BASIC_BINDINGS),$(WXLUA_ROOT)bindings/wxwidgets/$(x)_datatypes.lua)
-	rm -f $(foreach x,$(WXBIND_BASIC_BINDINGS),$(WXLUA_ROOT)include/wxbind/$(x)_bind.h)
-	rm -f $(foreach x,$(WXBIND_BASIC_BINDINGS),$(WXLUA_ROOT)modules/wxbind/src/$(x)_bind.cpp)
+	rm -f $(foreach x,$(WXLUA_ALL_BINDINGS),$(WXLUA_ROOT)bindings/wxwidgets/$(x)_datatypes.lua)
+	rm -f $(foreach x,$(WXLUA_ALL_BINDINGS),$(WXLUA_ROOT)include/wxbind/$(x)_bind.h)
+	rm -f $(foreach x,$(WXLUA_ALL_BINDINGS),$(WXLUA_ROOT)modules/wxbind/src/$(x)_bind.cpp)
 	rm -f $(WXLUA_ROOT)bindings/wxwidgets/wx_datatypes.lua
 	
 	rm -f $(WXLUA_ROOT)include/wxlua/wxlua_bind.h $(WXLUA_ROOT)bindings/wxlua/wxlua_datatypes.lua $(WXLUA_ROOT)modules/wxlua/wxlua_bind.cpp
 	rm -f $(WXLUA_ROOT)modules/wxlua/debugger/wxluadebugger_bind.h $(WXLUA_ROOT)bindings/wxlua_debugger/wxluadebugger_datatypes.lua $(WXLUA_ROOT)modules/wxlua/debugger/wxluadebugger_bind.cpp
-	rm -f $(WXLUA_ROOT)apps/wxluacan/wxluacan_bind.h $(WXLUA_ROOT)apps/wxluacan/wxluacan_datatypes.lua $(WXLUA_ROOT)apps/wxluacan/wxluacan_bind.cpp
 	
-	$(MAKE) -C $(WXLUA_ROOT)modules/lua-5.1/ clean
+	if [ -d $(WXLUA_ROOT)modules/lua-5.1/ ]; then $(MAKE) -C $(WXLUA_ROOT)modules/lua-5.1/ clean; fi
 	rm -rf $(WXLUA_ROOT)modules/lua-5.1/install/
 	
-	$(MAKE) -C $(WXLUA_ROOT)modules/lua-5.2/ clean
+	if [ -d $(WXLUA_ROOT)modules/lua-5.2/ ]; then $(MAKE) -C $(WXLUA_ROOT)modules/lua-5.2/ clean; fi
 	rm -rf $(WXLUA_ROOT)modules/lua-5.2/install/
-
-$(WXLUA_APP): $(WXLUA_APP_OBJS) $(WXLUA_LIB) $(WXLUA_DEBUG_LIB) $(WXLUA_DEBUGGER_LIB) $(WXBIND_LIB)
-	$(CXX) -o $@ $(WXLUA_APP_OBJS) $(WXLUA_LIB) $(WXLUA_DEBUGGER_LIB) $(WXLUA_DEBUG_LIB) $(WXBIND_LIB) $(LUA_LIBS) $(WX_LIBS)
-
-$(WXLUACAN_APP): $(WXLUACAN_APP_OBJS) $(WXLUA_LIB) $(WXBIND_LIB)
-	$(CXX) -o $@ $(WXLUACAN_APP_OBJS) $(WXLUA_LIB) $(WXBIND_LIB) $(LUA_LIBS) $(WX_LIBS)
-
-$(WXLUAFREEZE_APP): $(WXLUAFREEZE_OBJS) $(WXLUA_LIB) $(WXLUA_DEBUG_LIB) $(WXLUA_DEBUGGER_LIB) $(WXBIND_LIB)
-	$(CXX) -o $@ $(WXLUAFREEZE_OBJS) $(WXLUA_LIB) $(WXLUA_DEBUGGER_LIB) $(WXLUA_DEBUG_LIB) $(WXBIND_LIB) $(LUA_LIBS) $(WX_LIBS)
-
-$(WXLUAEDIT_APP): $(WXLUAEDIT_OBJS)
-	$(CXX) -o $@ $(WXLUAEDIT_OBJS)
 
 $(WXLUA_LIB): $(WXLUA_OBJS)
 	@mkdir -p $(dir $@)
@@ -235,12 +213,6 @@ $(WXBIND_LIB): $(WXBIND_OBJS)
 $(LUAMODULE): $(LUAMODULE_OBJS) $(WXLUA_LIB) $(WXLUA_DEBUGGER_LIB) $(WXLUA_DEBUG_LIB) $(WXBIND_LIB)
 	@mkdir -p $(dir $@)
 	$(CXX) -o $@ -shared -fPIC $(CXXFLAGS) $(LUAMODULE_OBJS) $(WXLUA_LIB) $(WXLUA_DEBUGGER_LIB) $(WXLUA_DEBUG_LIB) $(WXBIND_LIB) $(LUA_LIBS) $(WX_LIBS)
-
-$(WXLUA_ROOT)%.o: $(WXLUA_ROOT)%.c $(LUA_PREREQ) $(BINDING_PREREQS)
-	$(CC) -I$(WXLUA_ROOT)include/ -I$(WXLUA_ROOT)modules/wxbind/setup/ $(LUA_CFLAGS) $(CFLAGS) -fPIC -c -o $@ $<
-
-$(WXLUA_ROOT)%.o: $(WXLUA_ROOT)%.cpp $(LUA_PREREQ) $(BINDING_PREREQS)
-	$(CXX) -I$(WXLUA_ROOT)include/ -I$(WXLUA_ROOT)modules/wxbind/setup/ $(LUA_CFLAGS) $(WX_CXXFLAGS) $(CXXFLAGS) -fPIC -c -o $@ $<
 
 $(WXLUA_ROOT)modules/lua-5.1/install/lib/liblua.a:
 	# Lua's Makefile work with >1 concurrency.
@@ -371,7 +343,7 @@ $(WXCORE_BINDING_FLAG_FILE): $(WXCORE_BINDING_DEPDENDENCIES) $(LUA_PREREQ)
 # The "basic" wxWidgets bindings all follow the same pattern and have a
 # consistent set of outputs which can be encompassed by a pattern rule.
 
-WXBIND_BASIC_BINDINGS ?= \
+WXLUA_ENABLE_BINDINGS ?= \
 	wxadv \
 	wxaui \
 	wxgl \
@@ -395,7 +367,7 @@ $(WXLUA_ROOT)include/wxbind/%_bind.h $(WXLUA_ROOT)bindings/wxwidgets/%_datatypes
 		$(WXLUA_ROOT)modules/wxbind/src/$*_bind.cpp
 
 # Merged data types from wxWidgets library bindings for use by other bindings
-$(WXLUA_ROOT)bindings/wxwidgets/wx_datatypes.lua: $(WXLUA_ROOT)bindings/wxwidgets/wxbase_datatypes.lua $(foreach x,$(WXBIND_BASIC_BINDINGS),$(WXLUA_ROOT)bindings/wxwidgets/$(x)_datatypes.lua) $(LUA_PREREQ)
+$(WXLUA_ROOT)bindings/wxwidgets/wx_datatypes.lua: $(WXLUA_ROOT)bindings/wxwidgets/wxbase_datatypes.lua $(foreach x,$(WXLUA_ENABLE_BINDINGS),$(WXLUA_ROOT)bindings/wxwidgets/$(x)_datatypes.lua) $(LUA_PREREQ)
 	cd $(WXLUA_ROOT)bindings/ && $(LUA) -e"rulesFilename=\"wxwidgets/wxdatatypes_rules.lua\"" genwxbind.lua
 	
 	# genwxbind.lua won't update files that don't need it, so touch all the
@@ -424,14 +396,18 @@ $(WXLUA_ROOT)modules/wxlua/debugger/%_bind.h $(WXLUA_ROOT)bindings/wxlua_debugge
 		$(WXLUA_ROOT)bindings/wxlua_debugger/$*_datatypes.lua \
 		$(WXLUA_ROOT)modules/wxlua/debugger/$*_bind.cpp
 
-$(WXLUA_ROOT)apps/wxluacan/%_bind.h $(WXLUA_ROOT)apps/wxluacan/%_datatypes.lua $(WXLUA_ROOT)apps/wxluacan/%_bind.cpp: $(WXLUA_ROOT)apps/wxluacan/%_rules.lua $(LUA_PREREQ)
-	cd $(WXLUA_ROOT)apps/wxluacan/ && $(LUA) -e"rulesFilename=\"$*_rules.lua\"" ../../bindings/genwxbind.lua
-	
-	# genwxbind.lua won't update files that don't need it, so touch all the
-	# targets so that Make knows they are up-to-date.
-	touch $(WXLUA_ROOT)apps/wxluacan/$*_bind.h \
-		$(WXLUA_ROOT)apps/wxluacan/$*_datatypes.lua \
-		$(WXLUA_ROOT)apps/wxluacan/$*_bind.cpp
+# Bindings which must be built before anything in wxLua is compiled
+WXLUA_BIND_HEADERS = \
+	$(WXBASE_BINDING_TARGETS) \
+	$(WXCORE_BINDING_TARGETS) \
+	$(foreach x,$(WXLUA_ENABLE_BINDINGS),$(WXLUA_ROOT)include/wxbind/$(x)_bind.h) \
+	$(WXLUA_ROOT)include/wxlua/wxlua_bind.h
+
+$(WXLUA_ROOT)%.o: $(WXLUA_ROOT)%.c $(LUA_PREREQ) $(WXLUA_BIND_HEADERS)
+	$(CC) -I$(WXLUA_ROOT)include/ $(LUA_CFLAGS) $(CFLAGS) -fPIC -c -o $@ $<
+
+$(WXLUA_ROOT)%.o: $(WXLUA_ROOT)%.cpp $(LUA_PREREQ) $(WXLUA_BIND_HEADERS)
+	$(CXX) -I$(WXLUA_ROOT)include/ $(LUA_CFLAGS) $(WX_CXXFLAGS) $(CXXFLAGS) -fPIC -c -o $@ $<
 
 # Additional dependencies of the various bindings.
 # TODO: Update genwxbind.lua to output Makefile fragments with all the
@@ -540,9 +516,3 @@ $(WXLUA_ROOT)modules/wxlua/debugger/wxluadebugger_bind.cpp: \
 	$(WXLUA_ROOT)bindings/wxwidgets/wxcore_datatypes.lua \
 	$(WXLUA_ROOT)bindings/wxlua_debugger/override.hpp \
 	$(WXLUA_ROOT)bindings/wxlua_debugger/wxluadebugger.i
-
-$(WXLUA_ROOT)apps/wxluacan/wxluacan_bind.h \
-$(WXLUA_ROOT)apps/wxluacan/wxluacan_datatypes.lua \
-$(WXLUA_ROOT)apps/wxluacan/wxluacan_bind.cpp: \
-	$(WXLUA_ROOT)apps/wxluacan/wxluacan.i \
-	$(WXLUA_ROOT)bindings/wxwidgets/wx_datatypes.lua

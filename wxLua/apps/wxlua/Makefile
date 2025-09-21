@@ -1,23 +1,22 @@
 #----------------------------------------------------------------------------
-# Purpose:     wxLuaEdit application Makefile
+# Purpose:     wxLua application Makefile
 # Author:      Daniel Collins
 # Created:     21/09/2025
 # Copyright:   (c) 2025 Daniel Collins
 # Licence:     wxWidgets licence
 #----------------------------------------------------------------------------
 
-# This compiles a stand-alone application (wxLuaEdit) and demonstrates how to
-# make use of the wxLua library Makefile from another project.
+# This compiles a stand-alone application (wxLua) and demonstrates how to make
+# use of the wxLua library Makefile from another project.
 
 ifeq ($(OS),Windows_NT)
-	APP := wxluaedit.exe
+	APP := wxlua.exe
 else
-	APP := wxluaedit
+	APP := wxlua
 endif
 
 OBJS := \
-	wxledit.o \
-	wxluaedit.o
+	wxlua.o
 
 .PHONY: all
 all: $(APP)
@@ -37,7 +36,7 @@ clean: wxlua-clean
 # variables are set prior to including the library Makefile for it to use ours
 # instead.
 
-$(APP): $(OBJS) $(WXLUA_LIB) $(WXBIND_LIB)
+$(APP): $(OBJS) $(WXLUA_LIB) $(WXLUA_DEBUGGER_LIB) $(WXLUA_DEBUG_LIB) $(WXBIND_LIB)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LUA_LIBS) $(WX_LIBS)
 
 # We add $(WXLUA_BIND_HEADERS) as a prerequisite here to ensure all of wxLua's

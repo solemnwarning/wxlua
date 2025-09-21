@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wxluasetup.h
-// Purpose:     Control what wxLua bindings for wxWidgets are built
+// Purpose:     Control what wxLua bindings for wxWidgets are built (DEFAULTS)
 // Author:      John Labenski
 // Created:     1/10/2008
 // Copyright:   (c) 2008 John Labenski
@@ -8,16 +8,10 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __WXLUA_SETUP__
-#define __WXLUA_SETUP__
-
+#ifndef __WXLUA_SETUP_DEFAULTS__
+#define __WXLUA_SETUP_DEFAULTS__
 
 // Enable or disable single or small groups of classes, see bindings/*.i
-
-// This file is separate from the wxbind includes to allow you to modify it
-// or put a -Iother/path/to/wxluasetup/ to allow your own wxluasetup file
-// to be included since wxLua only includes it as "#include "wxluasetup.h"
-// without any path.
 
 #ifndef wxLUA_USE_Geometry
 #define wxLUA_USE_Geometry                      1
@@ -648,4 +642,4 @@
 #endif
 
 
-#endif // __WXLUA_SETUP__
+#endif // __WXLUA_SETUP_DEFAULTS__

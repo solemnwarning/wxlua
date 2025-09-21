@@ -1,9 +1,5 @@
 *.o
 
-/bin/wxlua
-/bin/wxluacan
-/bin/wxluafreeze
-
 /modules/lua-5.1/install/
 /modules/lua-5.1/src/liblua.a
 /modules/lua-5.1/src/lua
@@ -104,7 +100,3 @@
 /bindings/wxlua_debugger/wxluadebugger_datatypes.lua
 /modules/wxlua/debugger/wxluadebugger_bind.cpp
 /modules/wxlua/debugger/wxluadebugger_bind.h
-
-/apps/wxluacan/wxluacan_bind.cpp
-/apps/wxluacan/wxluacan_bind.h
-/apps/wxluacan/wxluacan_datatypes.lua
