@@ -577,6 +577,25 @@ endif()
 ADD_LIBRARY_FULL( wxLuaModule SHARED # ALLOW_MISSING_FILES
     HEADERS
         ${wxLua_ROOT_DIR}/modules/luamodule/luamoduledefs.h
+
+        # Not part of wxLuaModule, but this is the only way I could find to add
+        # a dependency to ensure the headers are generated before the sources
+        # in this library are compiled... apparently?
+        ${wxLua_ROOT_DIR}/include/wxbind/wxbase_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxcore_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxadv_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxaui_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxgl_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxhtml_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxmedia_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxnet_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxpropgrid_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxrichtext_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxstc_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxwebview_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxxml_bind.h
+        ${wxLua_ROOT_DIR}/include/wxbind/wxxrc_bind.h
+
     SOURCES
         ${wxLua_ROOT_DIR}/modules/luamodule/luamodule.cpp
         ${wxLua_ROOT_DIR}/modules/luamodule/luamodule.rc
