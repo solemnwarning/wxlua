@@ -307,18 +307,19 @@ endif()
 
 ADD_LIBRARY_FULL( wxLuaLib
     HEADERS
-        ${wxLua_ROOT_DIR}/modules/wxlua/atomic.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/sharedptr.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlbind.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlcallb.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlconsole.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxldefs.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxllua.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlobject.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlstate.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlua.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlua_bind.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlversion.h
+        ${wxLua_ROOT_DIR}/include/wxlua/atomic.h
+        ${wxLua_ROOT_DIR}/include/wxlua/sharedptr.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlbind.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlcallb.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlconsole.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxldefs.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxllua.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlobject.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlstate.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlua.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlua_bind.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlversion.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxluasetup-defaults.h
     SOURCES
         ${wxLua_ROOT_DIR}/modules/wxlua/bit.c
         ${wxLua_ROOT_DIR}/modules/wxlua/dummy.cpp
