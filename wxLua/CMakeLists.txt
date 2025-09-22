@@ -63,14 +63,13 @@ include( "${wxWidgets_USE_FILE}" )
 # Setup the location of the customizable wxluasetup.h file
 # ---------------------------------------------------------------------------
 
-if (NOT DEFINED wxLuaBind_WXLUASETUP_DIR)
-    set(wxLuaBind_WXLUASETUP_DIR "${wxLua_ROOT_DIR}/modules/wxbind/setup")
-endif()
+if (DEFINED wxLuaBind_WXLUASETUP_DIR)
 set(wxLuaBind_WXLUASETUP_DIR ${wxLuaBind_WXLUASETUP_DIR} CACHE PATH
     "Path to wxLua's wxWidgets binding wxluasetup.h setup file." FORCE)
 
 if (NOT EXISTS "${wxLuaBind_WXLUASETUP_DIR}")
     MESSAGE(FATAL_ERROR "wxLuaBind_WXLUASETUP_DIR points to a non-existant path: '${wxLuaBind_WXLUASETUP_DIR}', the default is '${wxLua_ROOT_DIR}/modules/wxbind/setup'.")
+endif()
 endif()
 
 # ---------------------------------------------------------------------------
@@ -373,7 +372,11 @@ ADD_DOXYGEN( wxLua_doxygen
 
 SETUP_wxLua() # all libraries are built with these settings
 
+if (DEFINED wxLuaBind_WXLUASETUP_DIR)
 include_directories(${wxLuaBind_WXLUASETUP_DIR})
+endif()
+
+include_directories("${wxLua_ROOT_DIR}/include")
 
 if (NOT TARGET wxLuaLib)
     add_subdirectory( modules/ )
@@ -470,20 +473,24 @@ if (wxLua_LUA_LIBRARY_USE_BUILTIN)
 endif(wxLua_LUA_LIBRARY_USE_BUILTIN)
 
 install(FILES
-        ${wxLua_ROOT_DIR}/modules/wxlua/atomic.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/sharedptr.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlbind.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlcallb.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlconsole.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxldefs.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxllua.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlobject.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlstate.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlua.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlua_bind.h
-        ${wxLua_ROOT_DIR}/modules/wxlua/wxlversion.h
-        ${wxLua_ROOT_DIR}/modules/wxbind/setup/wxluasetup.h
+        ${wxLua_ROOT_DIR}/include/wxlua/atomic.h
+        ${wxLua_ROOT_DIR}/include/wxlua/sharedptr.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlbind.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlcallb.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlconsole.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxldefs.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxllua.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlobject.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlstate.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlua.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlua_bind.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxlversion.h
+        ${wxLua_ROOT_DIR}/include/wxlua/wxluasetup-defaults.h
         DESTINATION "include/wxlua")
+
+install(FILES
+        ${wxLua_ROOT_DIR}/include/wxlua/wxluasetup.h
+        DESTINATION "include")
 
 install(FILES
         ${wxLua_ROOT_DIR}/modules/wxlua/debug/wxldebug.h
