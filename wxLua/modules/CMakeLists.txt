@@ -512,7 +512,7 @@ set(wxLuaBindLib_SOURCES ${wxLuaBindLib_SOURCES} CACHE INTERNAL "")
 else() # NOT wxLuaBind_SEPARATE_LIBS
 
 
-ADD_LIBRARY_FULL( wxLuaBindLib ALLOW_MISSING_FILES
+ADD_LIBRARY_FULL( wxLuaBindLib
     HEADERS
         ${wxLua_ROOT_DIR}/include/wxbind/*.h
 
