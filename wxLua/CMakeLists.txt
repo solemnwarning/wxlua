@@ -59,6 +59,22 @@ FIND_WXWIDGETS(wxWidgets_COMPONENTS) # Ok to call multiple times
 # CMake's wxWidgets include that will configure the build in this dir and sub-dirs
 include( "${wxWidgets_USE_FILE}" )
 
+set(wxLuaBind_ALL_LIBS
+    ${wxLuaBind_adv_Lib_}
+    ${wxLuaBind_aui_Lib_}
+    ${wxLuaBind_base_Lib_}
+    ${wxLuaBind_core_Lib_}
+    ${wxLuaBind_gl_Lib_}
+    ${wxLuaBind_html_Lib_}
+    ${wxLuaBind_media_Lib_}
+    ${wxLuaBind_net_Lib_}
+    ${wxLuaBind_richtext_Lib_}
+    ${wxLuaBind_stc_Lib_}
+    ${wxLuaBind_webview_Lib_}
+    ${wxLuaBind_xml_Lib_}
+    ${wxLuaBind_xrc_Lib_}
+    CACHE INTERNAL "")
+
 # ---------------------------------------------------------------------------
 # Setup the location of the customizable wxluasetup.h file
 # ---------------------------------------------------------------------------

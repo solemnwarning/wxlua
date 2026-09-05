@@ -475,22 +475,6 @@ if ("${wxWidgets_VERSION}" VERSION GREATER "2.9.0")
     ADD_LIBRARY_wxLuaBind(webview   "wxLuaBind_core_Lib;wxLuaLib")
 endif()
 
-set(wxLuaBind_ALL_LIBS
-    ${wxLuaBind_adv_Lib_}
-    ${wxLuaBind_aui_Lib_}
-    ${wxLuaBind_base_Lib_}
-    ${wxLuaBind_core_Lib_}
-    ${wxLuaBind_gl_Lib_}
-    ${wxLuaBind_html_Lib_}
-    ${wxLuaBind_media_Lib_}
-    ${wxLuaBind_net_Lib_}
-    ${wxLuaBind_richtext_Lib_}
-    ${wxLuaBind_stc_Lib_}
-    ${wxLuaBind_webview_Lib_}
-    ${wxLuaBind_xml_Lib_}
-    ${wxLuaBind_xrc_Lib_}
-    CACHE INTERNAL "")
-
 set(wxLuaBindLib_SOURCES
     ${wxLuaBind_adv_Lib_SOURCE_FILES}
     ${wxLuaBind_aui_Lib_SOURCE_FILES}

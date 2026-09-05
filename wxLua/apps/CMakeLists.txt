@@ -82,6 +82,7 @@ ADD_EXECUTABLE_FULL( wxLuaCan WIN32 MACOSX_BUNDLE
         "${wxLua_ROOT_DIR}/apps/wxluacan/wxluacan_bind.h"
     SOURCES
         "${wxLua_ROOT_DIR}/apps/wxluacan/*.cpp"
+        "${wxLua_ROOT_DIR}/apps/wxluacan/wxluacan_bind.cpp"
         "${wxLua_ROOT_DIR}/apps/wxluacan/cansim.rc"
         "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
     LINK_LIBRARIES
