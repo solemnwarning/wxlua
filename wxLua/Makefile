@@ -51,7 +51,7 @@ _ := $(error Unknown binding(s) specified in WXLUA_ENABLE_BINDINGS: $(filter-out
 endif
 
 WX_CONFIG ?= wx-config
-WX_USE_LIBS ?= propgrid webview gl xrc xml net media richtext aui stc html adv core base
+WX_USE_LIBS ?= base core $(patsubst wx%,%,$(WXLUA_ENABLE_BINDINGS))
 
 WX_CXXFLAGS ?= $(call shell-or-die,$(WX_CONFIG) --cxxflags $(WX_USE_LIBS))
 WX_LIBS     ?= $(call shell-or-die,$(WX_CONFIG) --libs $(WX_USE_LIBS))
