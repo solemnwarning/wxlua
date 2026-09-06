@@ -305,7 +305,7 @@ if ( BUILD_SHARED_LIBS_WIN_DLLS )
     set( WXLUALIB_PROPERTIES_DEFINE_SYMBOL PROPERTIES DEFINE_SYMBOL WXMAKINGDLL_WXLUA)
 endif()
 
-ADD_LIBRARY_FULL( wxLuaLib
+ADD_LIBRARY_FULL( wxLuaLib ALLOW_MISSING_FILES
     HEADERS
         ${wxLua_ROOT_DIR}/include/wxlua/atomic.h
         ${wxLua_ROOT_DIR}/include/wxlua/sharedptr.h
@@ -426,10 +426,11 @@ macro (ADD_LIBRARY_FULL_wxLuaBind name link_libraries)
             HEADERS
                 ${wxLua_ROOT_DIR}/modules/wxbind/include/wx${name}_*.h
             SOURCES
-                ${wxLua_ROOT_DIR}/modules/wxbind/src/wx${name}_*.cpp
                 ${wxLua_ROOT_DIR}/modules/wxbind/src/dummy.cpp
+                wxLuaBind_${name}_SOURCES
             LINK_LIBRARIES
                 ${link_libraries}
+            ALLOW_MISSING_FILES
             ${WXLUABIND_${_NAME}_PROPERTIES_DEFINE_SYMBOL}
             PROPERTIES FOLDER "wxLua/Modules"
             INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
@@ -496,7 +497,7 @@ set(wxLuaBindLib_SOURCES ${wxLuaBindLib_SOURCES} CACHE INTERNAL "")
 else() # NOT wxLuaBind_SEPARATE_LIBS
 
 
-ADD_LIBRARY_FULL( wxLuaBindLib
+ADD_LIBRARY_FULL( wxLuaBindLib ALLOW_MISSING_FILES
     HEADERS
         ${wxLua_ROOT_DIR}/include/wxbind/*.h
 
@@ -558,7 +559,7 @@ else()
     set(wxLuaModule_LUALINK "")
 endif()
 
-ADD_LIBRARY_FULL( wxLuaModule SHARED # ALLOW_MISSING_FILES
+ADD_LIBRARY_FULL( wxLuaModule SHARED ALLOW_MISSING_FILES
     HEADERS
         ${wxLua_ROOT_DIR}/modules/luamodule/luamoduledefs.h
 

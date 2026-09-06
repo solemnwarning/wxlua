@@ -118,6 +118,88 @@ foreach( wxlua_comp ${wxLuaBind_COMPONENTS} )
     endif()
 endforeach()
 
+set(wxLuaBind_adv_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxadv_bind.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxadv_wxladv.cpp
+)
+
+set(wxLuaBind_aui_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxaui_bind.cpp
+)
+
+set(wxLuaBind_base_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxbase_base.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxbase_bind.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxbase_config.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxbase_data.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxbase_datetime.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxbase_file.cpp
+)
+
+set(wxLuaBind_core_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_appframe.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_bind.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_clipdrag.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_controls.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_core.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_defsutils.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_dialogs.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_event.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_gdi.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_geometry.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_graphics.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_help.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_image.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_mdi.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_menutool.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_picker.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_print.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_sizer.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_windows.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxcore_wxlcore.cpp
+)
+
+set(wxLuaBind_gl_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxgl_bind.cpp
+)
+
+set(wxLuaBind_html_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxhtml_bind.cpp
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxhtml_wxlhtml.cpp
+)
+
+set(wxLuaBind_media_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxmedia_bind.cpp
+)
+
+set(wxLuaBind_net_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxnet_bind.cpp
+)
+
+set(wxLuaBind_propgrid_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxpropgrid_bind.cpp
+)
+
+set(wxLuaBind_richtext_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxrichtext_bind.cpp
+)
+
+set(wxLuaBind_stc_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxstc_bind.cpp
+)
+
+set(wxLuaBind_webview_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxwebview_bind.cpp
+)
+
+set(wxLuaBind_xml_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxxml_bind.cpp
+)
+
+set(wxLuaBind_xrc_SOURCES
+    ${wxLua_ROOT_DIR}/modules/wxbind/src/wxxrc_bind.cpp
+)
+
 # Verify that each library exists in the wxWidgets_COMPONENTS after finding wxWidgets.
 # Set all the -DwxLUA_USEBINDING_WXXXX, ignoring the defaults, for clarity.
 foreach( wxlua_comp ${wxLuaBind_ALL_COMPONENTS} )
@@ -134,7 +216,7 @@ foreach( wxlua_comp ${wxLuaBind_ALL_COMPONENTS} )
     if (wx_comp_found AND ("${wxlua_comp}" STREQUAL "${wxlua_comp_found}"))
         set(WXLUA_BINDTO_${wxlua_comp} TRUE CACHE INTERNAL "")
         set(wxLua_CXX_DEFINITIONS ${wxLua_CXX_DEFINITIONS} "-DwxLUA_USEBINDING_WX${wxlua_comp_upper}=1")
-        set(wxLuaBindLib_SOURCES ${wxLuaBindLib_SOURCES} "src/wx${wxlua_comp}_*.cpp" CACHE INTERNAL "")
+        set(wxLuaBindLib_SOURCES ${wxLuaBindLib_SOURCES} ${wxLuaBind_${wxlua_comp}_SOURCES} CACHE INTERNAL "")
     else()
         message(STATUS "* WARNING: Specified wxLuaBinding lib '${wxlua_comp}' in variable wxLuaBind_COMPONENTS is missing from wxWidgets_COMPONENTS so it will not be compiled.")
 

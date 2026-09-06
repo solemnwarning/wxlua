@@ -38,9 +38,9 @@ ADD_EXECUTABLE_FULL( wxLua_app WIN32 MACOSX_BUNDLE
         "${wxLua_ROOT_DIR}/apps/wxlua/wxlua.rc"
         "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
     LINK_LIBRARIES
-        ${wxLuaBind_ALL_LIBS}
         wxLuaDebuggerLib
         wxLuaDebugLib
+        wxLuaBindLib
         wxLuaLib
         LuaLib
         ${wxWidgets_LIBRARIES}
